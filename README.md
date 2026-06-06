@@ -1,4 +1,4 @@
-<!-- # OVO Clone — Production-Grade Digital Wallet Application
+# OVO Clone — Production-Grade Digital Wallet Application
 
 A high-fidelity clone of the OVO Digital Wallet application built with Flutter. This project demonstrates industry-standard mobile engineering practices, including structured Clean Architecture, reactive state management using Provider, local data persistence, advanced security locks, and a premium interactive finance trading dashboard.
 
@@ -119,4 +119,4 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-``` -->
+```
