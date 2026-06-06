@@ -223,16 +223,19 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   }
 
   Widget _buildBottomNav(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Consumer<NotificationProvider>(
       builder: (context, notifProvider, _) {
         final unreadCount = notifProvider.unreadCount;
 
         return Container(
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: theme.bottomNavigationBarTheme.backgroundColor ?? AppColors.surface,
             boxShadow: [
               BoxShadow(
-                color: AppColors.primary.withOpacity(0.08),
+                color: isDark ? Colors.black.withOpacity(0.3) : AppColors.primary.withOpacity(0.08),
                 blurRadius: 16,
                 offset: const Offset(0, -4),
               ),
@@ -249,27 +252,35 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                     icon: Icons.home_rounded,
                     label: 'Home',
                     index: 0,
+                    theme: theme,
+                    isDark: isDark,
                   ),
                   // Finance
                   _buildNavItem(
                     icon: Icons.account_balance_wallet_rounded,
                     label: 'Finance',
                     index: 1,
+                    theme: theme,
+                    isDark: isDark,
                   ),
                   // Pay (center elevated)
-                  _buildCenterPayButton(),
+                  _buildCenterPayButton(theme, isDark),
                   // Inbox with badge
                   _buildNavItemWithBadge(
                     icon: Icons.inbox_rounded,
                     label: 'Inbox',
                     index: 3,
                     badgeCount: unreadCount,
+                    theme: theme,
+                    isDark: isDark,
                   ),
                   // Profile
                   _buildNavItem(
                     icon: Icons.person_rounded,
                     label: 'Profile',
                     index: 4,
+                    theme: theme,
+                    isDark: isDark,
                   ),
                 ],
               ),
@@ -284,8 +295,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     required IconData icon,
     required String label,
     required int index,
+    required ThemeData theme,
+    required bool isDark,
   }) {
     final isSelected = _currentIndex == index;
+    final activeColor = theme.bottomNavigationBarTheme.selectedItemColor ?? AppColors.primary;
+    final inactiveColor = theme.bottomNavigationBarTheme.unselectedItemColor ?? AppColors.textHint;
     return Expanded(
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -296,13 +311,13 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             Icon(
               icon,
               size: 24,
-              color: isSelected ? AppColors.primary : AppColors.textHint,
+              color: isSelected ? activeColor : inactiveColor,
             ),
             const SizedBox(height: 3),
             Text(
               label,
               style: AppTextStyles.labelSmall.copyWith(
-                color: isSelected ? AppColors.primary : AppColors.textHint,
+                color: isSelected ? activeColor : inactiveColor,
                 fontSize: 10,
                 fontWeight:
                     isSelected ? FontWeight.w700 : FontWeight.w500,
@@ -319,8 +334,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     required String label,
     required int index,
     required int badgeCount,
+    required ThemeData theme,
+    required bool isDark,
   }) {
     final isSelected = _currentIndex == index;
+    final activeColor = theme.bottomNavigationBarTheme.selectedItemColor ?? AppColors.primary;
+    final inactiveColor = theme.bottomNavigationBarTheme.unselectedItemColor ?? AppColors.textHint;
     return Expanded(
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -334,7 +353,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 Icon(
                   icon,
                   size: 24,
-                  color: isSelected ? AppColors.primary : AppColors.textHint,
+                  color: isSelected ? activeColor : inactiveColor,
                 ),
                 if (badgeCount > 0)
                   Positioned(
@@ -365,7 +384,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             Text(
               label,
               style: AppTextStyles.labelSmall.copyWith(
-                color: isSelected ? AppColors.primary : AppColors.textHint,
+                color: isSelected ? activeColor : inactiveColor,
                 fontSize: 10,
                 fontWeight:
                     isSelected ? FontWeight.w700 : FontWeight.w500,
@@ -377,7 +396,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     );
   }
 
-  Widget _buildCenterPayButton() {
+  Widget _buildCenterPayButton(ThemeData theme, bool isDark) {
+    final activeColor = theme.bottomNavigationBarTheme.selectedItemColor ?? AppColors.primary;
     return Expanded(
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -390,11 +410,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               width: 52,
               height: 52,
               decoration: BoxDecoration(
-                color: AppColors.primary,
+                color: activeColor,
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primary.withOpacity(0.45),
+                    color: activeColor.withOpacity(0.45),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
@@ -410,7 +430,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             Text(
               'Pay',
               style: AppTextStyles.labelSmall.copyWith(
-                color: AppColors.primary,
+                color: activeColor,
                 fontSize: 10,
                 fontWeight: FontWeight.w700,
               ),

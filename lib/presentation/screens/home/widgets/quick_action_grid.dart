@@ -60,6 +60,9 @@ class QuickActionGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -69,6 +72,7 @@ class QuickActionGrid extends StatelessWidget {
             'Layanan',
             style: AppTextStyles.titleSmall.copyWith(
               fontWeight: FontWeight.w700,
+              color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
             ),
           ),
           const SizedBox(height: 12),
@@ -80,7 +84,7 @@ class QuickActionGrid extends StatelessWidget {
             crossAxisSpacing: 8,
             childAspectRatio: 0.85,
             children: _actions
-                .map((a) => _QuickActionItem(item: a))
+                .map((a) => _QuickActionItem(item: a, isDark: isDark))
                 .toList(),
           ),
         ],
@@ -105,8 +109,9 @@ class _ActionItem {
 
 class _QuickActionItem extends StatelessWidget {
   final _ActionItem item;
+  final bool isDark;
 
-  const _QuickActionItem({required this.item});
+  const _QuickActionItem({required this.item, required this.isDark});
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +137,7 @@ class _QuickActionItem extends StatelessWidget {
           Text(
             item.label,
             style: AppTextStyles.labelSmall.copyWith(
-              color: AppColors.textSecondary,
+              color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
               fontSize: 11,
             ),
             textAlign: TextAlign.center,

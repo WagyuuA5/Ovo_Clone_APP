@@ -15,8 +15,9 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: Consumer<AuthProvider>(
         builder: (context, auth, _) {
           final user = auth.user;
@@ -207,7 +208,9 @@ class ProfileScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: AppColors.cardShadow,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.black.withOpacity(0.3)
+                    : AppColors.cardShadow,
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),

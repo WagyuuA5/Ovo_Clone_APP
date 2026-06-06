@@ -11,6 +11,8 @@ class PromoBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final promos = DummyData.promos;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,6 +23,7 @@ class PromoBanner extends StatelessWidget {
             'Promo untuk Kamu',
             style: AppTextStyles.titleSmall.copyWith(
               fontWeight: FontWeight.w700,
+              color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
             ),
           ),
         ),

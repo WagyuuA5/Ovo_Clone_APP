@@ -17,6 +17,9 @@ class TransactionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
@@ -34,7 +37,7 @@ class TransactionTile extends StatelessWidget {
                     transaction.title,
                     style: AppTextStyles.bodyMedium.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
+                      color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -43,7 +46,7 @@ class TransactionTile extends StatelessWidget {
                   Text(
                     DateFormatter.formatRelative(transaction.date),
                     style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textSecondary,
+                      color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
                     ),
                   ),
                 ],

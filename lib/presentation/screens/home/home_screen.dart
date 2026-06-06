@@ -35,9 +35,11 @@ class _HomeScreenState extends State<HomeScreen> {
     final notificationProvider = context.watch<NotificationProvider>();
     final userName = authProvider.user.name;
     final unreadCount = notificationProvider.unreadCount;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
@@ -55,12 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          // ── White rounded-top content container ───────────────────────────
+          // ── White/Dark rounded-top content container ───────────────────────────
           SliverToBoxAdapter(
             child: Container(
-              decoration: const BoxDecoration(
-                color: AppColors.background,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+              decoration: BoxDecoration(
+                color: theme.scaffoldBackgroundColor,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
               ),
               transform: Matrix4.translationValues(0, -20, 0),
               child: Column(
@@ -84,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 24),
 
                   // Recent Transactions
-                  _buildRecentTransactions(),
+                  _buildRecentTransactions(theme, isDark),
 
                   const SizedBox(height: 24),
                 ],
@@ -96,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildRecentTransactions() {
+  Widget _buildRecentTransactions(ThemeData theme, bool isDark) {
     return Consumer<TransactionProvider>(
       builder: (context, txProvider, _) {
         final recent = txProvider.recentTransactions;
@@ -113,6 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     'Transaksi Terakhir',
                     style: AppTextStyles.titleSmall.copyWith(
                       fontWeight: FontWeight.w700,
+                      color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,
                     ),
                   ),
                   TextButton(
@@ -120,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.of(context).pushNamed(AppRoutes.history);
                     },
                     style: TextButton.styleFrom(
-                      foregroundColor: AppColors.primary,
+                      foregroundColor: isDark ? AppColors.primaryLight : AppColors.primary,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 4),
                       minimumSize: Size.zero,
@@ -129,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Text(
                       'Lihat Semua',
                       style: AppTextStyles.labelSmall.copyWith(
-                        color: AppColors.primary,
+                        color: isDark ? AppColors.primaryLight : AppColors.primary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -148,13 +151,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       Icon(
                         Icons.receipt_long_rounded,
                         size: 48,
-                        color: AppColors.textHint,
+                        color: isDark ? AppColors.textHintDark : AppColors.textHint,
                       ),
                       const SizedBox(height: 12),
                       Text(
                         'Belum ada transaksi',
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.textSecondary,
+                          color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
                         ),
                       ),
                     ],
@@ -165,11 +168,11 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
+                  color: theme.cardTheme.color ?? AppColors.surface,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.cardShadow,
+                      color: isDark ? Colors.black.withOpacity(0.3) : AppColors.cardShadow,
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
@@ -182,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       final tx = recent[index];
                       return Column(
                         children: [
-                          TransactionTile(
+                           TransactionTile(
                             transaction: tx,
                             onTap: () {
                               Navigator.of(context).pushNamed(
@@ -195,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Divider(
                               height: 1,
                               thickness: 1,
-                              color: AppColors.divider,
+                              color: theme.dividerTheme.color ?? AppColors.divider,
                               indent: 74,
                             ),
                         ],
